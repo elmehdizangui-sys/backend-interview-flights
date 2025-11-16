@@ -11,5 +11,5 @@ interface FlightSearchUseCase {
      * @param request The flight search request.
      * @return A list of flights matching the search criteria, ordered by fare.
      */
-    suspend fun searchFlights(request: FlightSearchCriteria): List<Flight>
+    suspend fun searchFlights(searchCriteria: FlightSearchCriteria): List<Flight>
 }
