@@ -3,7 +3,7 @@ package org.deblock.domain.usecase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import org.deblock.exercise.application.inbound.service.FlightSearchUseCaseImpl
+import org.deblock.exercise.application.service.FlightSearchUseCaseImpl
 import org.deblock.exercise.domain.model.Flight
 import org.deblock.exercise.domain.model.FlightSearchCriteria
 import org.deblock.exercise.domain.port.FlightSupplier

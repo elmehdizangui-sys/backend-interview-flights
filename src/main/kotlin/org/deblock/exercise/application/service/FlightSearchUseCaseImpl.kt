@@ -1,9 +1,9 @@
-package org.deblock.exercise.application.inbound.service
+package org.deblock.exercise.application.service
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
-import org.deblock.exercise.application.inbound.port.FlightSearchUseCase
+import org.deblock.exercise.application.port.inbound.FlightSearchUseCase
 import org.deblock.exercise.domain.model.Flight
 import org.deblock.exercise.domain.model.FlightSearchCriteria
 import org.deblock.exercise.domain.port.FlightSupplier
