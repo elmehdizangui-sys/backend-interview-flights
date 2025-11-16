@@ -1,12 +1,14 @@
-package org.deblock.adapter.web
+package org.deblock.exercise.adapter.web
 
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import org.deblock.exercise.adapter.web.FlightController
+import org.deblock.exercise.adapter.web.controller.FlightController
 import org.deblock.exercise.adapter.web.dto.FlightSearchRequestDto
+import org.deblock.exercise.adapter.web.dto.FlightSearchResponseDto
 import org.deblock.exercise.adapter.web.mapper.FlightMapper
 import org.deblock.exercise.application.port.inbound.FlightSearchUseCase
+import org.deblock.exercise.domain.model.AirportCode
 import org.deblock.exercise.domain.model.Flight
 import org.deblock.exercise.domain.model.FlightSearchCriteria
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -40,8 +42,8 @@ class FlightControllerTest {
             )
 
             val request = FlightSearchCriteria(
-                origin = lhr,
-                destination = ams,
+                origin = AirportCode.create(lhr),
+                destination = AirportCode.create(ams),
                 departureDate = LocalDate.now(),
                 returnDate = LocalDate.now().plusDays(1),
                 numberOfPassengers = 2
@@ -51,13 +53,13 @@ class FlightControllerTest {
                 airline = britishAirways,
                 supplier = crazyAir,
                 fare = BigDecimal("100.00"),
-                departureAirportCode = lhr,
-                destinationAirportCode = ams,
+                departureAirportCode = AirportCode.create(lhr),
+                destinationAirportCode =AirportCode.create( ams),
                 departureDate = LocalDateTime.now(),
                 arrivalDate = LocalDateTime.now().plusHours(2)
             )
 
-            val flightDto = org.deblock.exercise.adapter.web.dto.FlightDto(
+            val flightSearchResponseDto = FlightSearchResponseDto(
                 airline = britishAirways,
                 supplier = crazyAir,
                 fare = BigDecimal("100.00"),
@@ -69,7 +71,7 @@ class FlightControllerTest {
 
             coEvery { flightMapper.toFlightSearchRequest(requestDto) } returns request
             coEvery { flightSearchUseCase.searchFlights(request) } returns listOf(flight)
-            coEvery { flightMapper.toFlightDto(flight) } returns flightDto
+            coEvery { flightMapper.toFlightDto(flight) } returns flightSearchResponseDto
 
             // When
             val response = controller.searchFlights(requestDto)
@@ -95,8 +97,8 @@ class FlightControllerTest {
             )
 
             val request = FlightSearchCriteria(
-                origin = lhr,
-                destination = ams,
+                origin = AirportCode.create(lhr),
+                destination = AirportCode.create(ams),
                 departureDate = LocalDate.now(),
                 returnDate = LocalDate.now().plusDays(1),
                 numberOfPassengers = 2
@@ -126,18 +128,10 @@ class FlightControllerTest {
                 numberOfPassengers = 2
             )
 
-            val request = FlightSearchCriteria(
-                origin = lhr,
-                destination = lhr, // Same origin and destination
-                departureDate = LocalDate.now(),
-                returnDate = LocalDate.now().plusDays(1),
-                numberOfPassengers = 2
-            )
-
             val errorMessage = "Origin and destination cannot be the same"
 
-            coEvery { flightMapper.toFlightSearchRequest(requestDto) } returns request
-            coEvery { flightSearchUseCase.searchFlights(request) } throws IllegalArgumentException(errorMessage)
+            // Mock that the mapper will throw the exception when creating the FlightSearchCriteria
+            coEvery { flightMapper.toFlightSearchRequest(requestDto) } throws IllegalArgumentException(errorMessage)
 
             // When & Then
             val exception = assertThrows(IllegalArgumentException::class.java) {
