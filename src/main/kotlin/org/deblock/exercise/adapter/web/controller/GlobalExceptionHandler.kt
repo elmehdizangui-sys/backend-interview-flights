@@ -1,4 +1,4 @@
-package org.deblock.exercise.adapter.web
+package org.deblock.exercise.adapter.web.controller
 
 import jakarta.servlet.http.HttpServletRequest
 import org.deblock.exercise.adapter.web.dto.ErrorResponseDto

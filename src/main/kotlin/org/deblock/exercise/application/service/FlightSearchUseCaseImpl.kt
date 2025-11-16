@@ -4,9 +4,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
 import org.deblock.exercise.application.port.inbound.FlightSearchUseCase
+import org.deblock.exercise.application.port.outbound.FlightSupplier
 import org.deblock.exercise.domain.model.Flight
 import org.deblock.exercise.domain.model.FlightSearchCriteria
-import org.deblock.exercise.domain.port.FlightSupplier
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 
@@ -39,18 +39,6 @@ class FlightSearchUseCaseImpl(private val suppliers: List<FlightSupplier>) : Fli
         if (criteria.numberOfPassengers < MIN_PASSENGERS || criteria.numberOfPassengers > MAX_PASSENGERS) {
             throw IllegalArgumentException("Number of passengers must be between $MIN_PASSENGERS and $MAX_PASSENGERS")
         }
-
-        if (criteria.origin.isBlank()) {
-            throw IllegalArgumentException("Origin airport code cannot be empty")
-        }
-
-        if (criteria.destination.isBlank()) {
-            throw IllegalArgumentException("Destination airport code cannot be empty")
-        }
-
-        if (criteria.origin == criteria.destination) {
-            throw IllegalArgumentException("Origin and destination cannot be the same")
-        }
     }
 
 
@@ -60,7 +48,7 @@ class FlightSearchUseCaseImpl(private val suppliers: List<FlightSupplier>) : Fli
                 try {
                     supplier.searchFlights(criteria)
                 } catch (e: Exception) {
-                    logger.error("Error searching flights from ${supplier.name}: ${e.message}", e)
+                    logger.error("Error searching flights from ${supplier.supplierName}: ${e.message}", e)
                     emptyList()
                 }
             }

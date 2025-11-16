@@ -1,8 +1,8 @@
-package org.deblock.exercise.adapter.web
+package org.deblock.exercise.adapter.web.controller
 
 import jakarta.validation.Valid
-import org.deblock.exercise.adapter.web.dto.FlightDto
 import org.deblock.exercise.adapter.web.dto.FlightSearchRequestDto
+import org.deblock.exercise.adapter.web.dto.FlightSearchResponseDto
 import org.deblock.exercise.adapter.web.mapper.FlightMapper
 import org.deblock.exercise.application.port.inbound.FlightSearchUseCase
 import org.slf4j.LoggerFactory
@@ -22,7 +22,7 @@ class FlightController(
     private val logger = LoggerFactory.getLogger(FlightController::class.java)
 
     @PostMapping("/search")
-    suspend fun searchFlights(@Valid @RequestBody requestDto: FlightSearchRequestDto): ResponseEntity<List<FlightDto>> {
+    suspend fun searchFlights(@Valid @RequestBody requestDto: FlightSearchRequestDto): ResponseEntity<List<FlightSearchResponseDto>> {
         logger.debug("Searching flights from ${requestDto.origin} to ${requestDto.destination}")
 
         val request = flightMapper.toFlightSearchRequest(requestDto)

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat
 import java.math.BigDecimal
 import java.time.LocalDateTime
 
-data class FlightDto(
+data class FlightSearchResponseDto(
     val airline: String,
     val supplier: String,
     val fare: BigDecimal,

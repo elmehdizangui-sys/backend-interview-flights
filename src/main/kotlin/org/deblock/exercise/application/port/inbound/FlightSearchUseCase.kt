@@ -5,5 +5,7 @@ import org.deblock.exercise.domain.model.FlightSearchCriteria
 
 
 interface FlightSearchUseCase {
+
     suspend fun searchFlights(searchCriteria: FlightSearchCriteria): List<Flight>
+
 }

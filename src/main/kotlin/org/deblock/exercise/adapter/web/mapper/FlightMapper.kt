@@ -1,7 +1,8 @@
 package org.deblock.exercise.adapter.web.mapper
 
-import org.deblock.exercise.adapter.web.dto.FlightDto
 import org.deblock.exercise.adapter.web.dto.FlightSearchRequestDto
+import org.deblock.exercise.adapter.web.dto.FlightSearchResponseDto
+import org.deblock.exercise.domain.model.AirportCode
 import org.deblock.exercise.domain.model.Flight
 import org.deblock.exercise.domain.model.FlightSearchCriteria
 import org.springframework.stereotype.Component
@@ -14,8 +15,8 @@ class FlightMapper {
 
     fun toFlightSearchRequest(dto: FlightSearchRequestDto): FlightSearchCriteria {
         return FlightSearchCriteria(
-            origin = dto.origin,
-            destination = dto.destination,
+            origin = AirportCode.create(dto.origin),
+            destination = AirportCode.create(dto.destination),
             departureDate = dto.departureDate,
             returnDate = dto.returnDate,
             numberOfPassengers = dto.numberOfPassengers
@@ -23,13 +24,13 @@ class FlightMapper {
     }
 
 
-    fun toFlightDto(flight: Flight): FlightDto {
-        return FlightDto(
+    fun toFlightDto(flight: Flight): FlightSearchResponseDto {
+        return FlightSearchResponseDto(
             airline = flight.airline,
             supplier = flight.supplier,
             fare = flight.fare,
-            departureAirportCode = flight.departureAirportCode,
-            destinationAirportCode = flight.destinationAirportCode,
+            departureAirportCode = flight.departureAirportCode.code,
+            destinationAirportCode = flight.destinationAirportCode.code,
             departureDate = flight.departureDate,
             arrivalDate = flight.arrivalDate
         )
